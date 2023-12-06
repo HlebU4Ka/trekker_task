@@ -16,15 +16,29 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
 from Employee.views import busy_employees, important_tasks
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+from rest_framework import permissions
 
+schema_view = get_schema_view(
+   openapi.Info(
+      title="Tracking Tasks",
+      default_version='v0.1',
+      description="Tracking Tasks. Отслеживание задач и свободных сотрудников",
+      terms_of_service="https://www.settings_app.com/terms/",
+      contact=openapi.Contact(email="gelbkot57@gmail.com"),
+   ),
+   public=True,
+   permission_classes=(permissions.AllowAny,),
+)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('busy_employees/', busy_employees, name='busy-employees'),
     path('important_tasks/', important_tasks, name='important-tasks'),
     path('api/', include('Employee.urls')),
-    path('api/', include('Task.urls'))
+    path('api/', include('Task.urls')),
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 
 ]
 
