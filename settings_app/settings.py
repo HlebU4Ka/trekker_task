@@ -15,12 +15,13 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+LANGUAGE_CODE = 'ru'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-jlpy*i*2x-i)!di2huq7h4-wndch3ek3btccj*#%vxoe6559+5'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -42,10 +43,6 @@ INSTALLED_APPS = [
     'Employee'
 ]
 """
-4. Валидация данных:
-Добавление валидации:
-Используйте встроенные возможности FastAPI для валидации данных входящих запросов.
-Реализуйте проверки на корректность данных при создании и обновлении сотрудников и задач.
 5. Документация:
 Использование Swagger:
 Включите автоматическую документацию с использованием Swagger (FastAPI предоставляет встроенную поддержку Swagger).
