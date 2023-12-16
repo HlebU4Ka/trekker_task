@@ -11,16 +11,18 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+load_dotenv()
+
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+LOCALE_DIR = BASE_DIR / 'locale'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-jlpy*i*2x-i)!di2huq7h4-wndch3ek3btccj*#%vxoe6559+5'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'default_secret_key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -39,27 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'Task',
-    'Employee'
+    'Employee',
+    'drf_yasg',
 ]
-"""
-4. Валидация данных:
-Добавление валидации:
-Используйте встроенные возможности FastAPI для валидации данных входящих запросов.
-Реализуйте проверки на корректность данных при создании и обновлении сотрудников и задач.
-5. Документация:
-Использование Swagger:
-Включите автоматическую документацию с использованием Swagger (FastAPI предоставляет встроенную поддержку Swagger).
-6. Тестирование:
-Написание тестов:
-Напишите тесты для каждого эндпоинта, проверяя основные сценарии использования и граничные случаи.
-7. Запуск и развертывание:
-Запуск приложения:
 
-Убедитесь, что все зависимости установлены.
-Запустите серверное приложение.
-Развертывание (по желанию):
-
-Разверните приложение на сервере, убедившись в безопасности и настроенности сервера."""
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -68,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware'
 ]
 
 ROOT_URLCONF = 'settings_app.urls'
@@ -97,11 +83,11 @@ WSGI_APPLICATION = 'settings_app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'trekker_task',
-        'USER': 'postgres',
-        'PASSWORD': '0052533',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
 
@@ -130,13 +116,15 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
+USE_L10N = True
 USE_TZ = True
+ADMIN_URL = 'admin/'
 
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale'),
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
