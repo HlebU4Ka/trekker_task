@@ -5,6 +5,7 @@ class EmployeeManager(models.Manager):
     def search(self, query):
         return self.filter(models.Q(first_name__icontains=query) | models.Q(last_name__icontains=query))
 
+
 class Employee(models.Model):
     """
     Модель представляет сотрудника.
